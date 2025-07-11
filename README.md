@@ -1,7 +1,7 @@
 # MSER-Net
-|-- dataset
-|   |-- train
-|   |   |-- real
+|-- dataset  
+|   |-- train  
+|   |   |-- real  
 |   |   |	|-- 000
 |   |   |	|	|-- frame0.jpg
 |   |   |	|	|-- frame1.jpg
