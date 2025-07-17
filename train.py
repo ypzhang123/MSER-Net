@@ -201,32 +201,6 @@ if __name__ == '__main__':
         
         auc, r_acc, f_acc, t_acc = evaluate(model, dataset_path, mode='test')
         logger.debug(f'(Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-        
-        #auc, r_acc, f_acc, t_acc = evaluate1(model, dataset_path, mode='test')
-        #logger.debug(f'(Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-
-        #auc, r_acc, f_acc, t_acc = evaluate2(model, dataset_path, mode='test')
-        #logger.debug(f'(Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-        
-       # auc, r_acc, f_acc, t_acc = evaluate3(model, dataset_path, mode='test')
-        #logger.debug(f'(Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-        
-        
-        
-        
-        #auc, r_acc, f_acc, t_acc = evaluate4(model, dataset_path1, mode='test')
-        #logger.debug(f'(FF++c40 Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-       
-        #auc, r_acc, f_acc, t_acc = evaluate5(model, dataset_path2, mode='test')
-        #logger.debug(f'(Celebv2 Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-        
-        #auc, r_acc, f_acc, t_acc = evaluate6(model, dataset_path3, mode='test')
-        #logger.debug(f'(WildDeepfake Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-        
-        #auc, r_acc, f_acc, t_acc = evaluate7(model, dataset_path4, mode='test')
-        #logger.debug(f'(DFDCp Test @ epoch {epoch + 1}) auc: {auc}, r_acc: {r_acc}, f_acc:{f_acc}, t_acc:{t_acc}')
-
-        #model.is_training = True
 
         # save model
         ckpt_model_name = f'train_epoch_{epoch + 1}.pkl'
