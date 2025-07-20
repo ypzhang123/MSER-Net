@@ -12,12 +12,12 @@ class ImageAttacks:
         if img_path:
             self.orig_img = cv2.imread(img_path)
             if self.orig_img is None:
-                raise ValueError(f"无法读取图像: {img_path}")
+                raise ValueError(f"Load error: {img_path}")
             self.orig_img = cv2.cvtColor(self.orig_img, cv2.COLOR_BGR2RGB)
         elif img is not None:
-            self.orig_img = img  # 直接使用 numpy 数组
+            self.orig_img = img 
         else:
-            raise ValueError("必须提供 img 或 img_path")
+            raise ValueError("img or img_path")
 
     def color_saturation(self, severity):
 
@@ -35,7 +35,6 @@ class ImageAttacks:
             return self.orig_img.copy()
 
         img_hsv = cv2.cvtColor(self.orig_img, cv2.COLOR_RGB2HSV).astype(np.float32)
-        # 调整饱和度通道
         img_hsv[:, :, 1] = img_hsv[:, :, 1] * saturation
         img_hsv[:, :, 1] = np.clip(img_hsv[:, :, 1], 0, 255)
         img_output = cv2.cvtColor(img_hsv.astype(np.uint8), cv2.COLOR_HSV2RGB)
@@ -82,16 +81,12 @@ class ImageAttacks:
         img = self.orig_img.copy()
         h, w, c = img.shape
 
-        # 创建一个随机的块尺寸，基于图像大小和块数
         block_size = 16
 
         for _ in range(blocks):
-            # 随机选择块的位置
+
             block_x = np.random.randint(0, w - block_size)
             block_y = np.random.randint(0, h - block_size)
-
-            # 将块像素置为0（显示为黑色块）
-            # 如果需要灰色块，可以设置为灰色值，例如[128, 128, 128]
             img[block_y:block_y + block_size, block_x:block_x + block_size] = 0
 
         return img
