@@ -108,7 +108,7 @@ import random
 
 class RandomMask(object):
     def __init__(self, ratio=0.5, patch_size=16, p=0.5):
-        # 初始化参数
+
         if isinstance(ratio, float):
             self.fixed_ratio = True
             self.ratio = (ratio, ratio)
@@ -116,60 +116,49 @@ class RandomMask(object):
             self.fixed_ratio = False
             self.ratio = ratio
         else:
-            raise ValueError("比率必须是浮点数或两个浮点数的元组。")
+            raise ValueError("Must be float")
 
         self.patch_size = patch_size
         self.p = p
 
     def __call__(self, tensor1, tensor2):
-        # 确保输入是两个张量
         if not (isinstance(tensor1, torch.Tensor) and isinstance(tensor2, torch.Tensor)):
-            raise ValueError("输入必须是两个PyTorch张量。")
+            raise ValueError("PyTorch tensor")
 
-        # 检查输入形状是否匹配 (B, C, H, W)
         if tensor1.shape != tensor2.shape or len(tensor1.shape) != 4:
-            raise ValueError("两个输入张量必须具有相同的BCHW形状。")
+            raise ValueError("Must be same shape")
 
-        # 如果随机概率未触发，直接返回原张量
         if random.random() > self.p:
             return tensor1, tensor2
 
         b, c, h, w = tensor1.shape
-
-        # 创建输出张量的副本
+        
         masked_tensor1 = tensor1.clone()
         masked_tensor2 = tensor2.clone()
 
-        # 为batch中的每个样本单独生成掩膜
         for batch_idx in range(b):
-            # 确定掩膜比率
             if self.fixed_ratio:
                 ratio = self.ratio[0]
             else:
                 ratio = random.uniform(self.ratio[0], self.ratio[1])
 
-            # 计算需要的掩膜总数
             num_masks = int((h * w * ratio) / (self.patch_size ** 2))
 
-            # 生成不重叠的随机位置集合
             all_positions = set()
             while len(all_positions) < num_masks:
                 top = random.randint(0, (h // self.patch_size) - 1) * self.patch_size
                 left = random.randint(0, (w // self.patch_size) - 1) * self.patch_size
                 all_positions.add((top, left))
 
-            # 将位置随机分配给两个掩膜，确保互不重叠
             positions_list = list(all_positions)
             random.shuffle(positions_list)
             split_point = len(positions_list) // 2
             positions1 = positions_list[:split_point]
             positions2 = positions_list[split_point:]
 
-            # 对第一个张量应用掩膜
             for (top, left) in positions1:
                 masked_tensor1[batch_idx, :, top:top + self.patch_size, left:left + self.patch_size] = 0
 
-            # 对第二个张量应用掩膜
             for (top, left) in positions2:
                 masked_tensor2[batch_idx, :, top:top + self.patch_size, left:left + self.patch_size] = 0
 
