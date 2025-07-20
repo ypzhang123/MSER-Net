@@ -21,7 +21,7 @@ torch.cuda.empty_cache()
 
 warnings.filterwarnings("ignore")
 
-# 配置
+# dataset
 dataset_path = '/home/admin1/DFMamba/dataset/FF++c23/'
 
 dataset_path1 = "/home/admin1/DFMamba/dataset/FF++c40/"
@@ -97,7 +97,7 @@ def parse_option():
     parser.add_argument('--fused_layernorm', action='store_true', help='Use fused layernorm.')
     parser.add_argument('--optim', type=str, help='overwrite optimizer if provided, can be adamw/sgd.')
 
-    # EMA related parameters 指数滑动平均
+    # EMA related parameters
     parser.add_argument('--model_ema', type=str2bool, default=True)
     parser.add_argument('--model_ema_decay', type=float, default=0.9999, help='')
     parser.add_argument('--model_ema_force_cpu', type=str2bool, default=False, help='')
@@ -126,8 +126,8 @@ if __name__ == '__main__':
     dataset_fake, _ = get_dataset(name='train', size=224, root=dataset_path, frame_num=32, augment=True)
     
     # label
-    labels_real = torch.zeros(len(dataset_real))  # 真实数据标签为0
-    labels_fake = torch.ones(len(dataset_fake))   # 伪造数据标签为1
+    labels_real = torch.zeros(len(dataset_real))  
+    labels_fake = torch.ones(len(dataset_fake))   
 
     # combine
     class CombinedDataset(torch.utils.data.Dataset):
@@ -141,7 +141,6 @@ if __name__ == '__main__':
             return len(self.data)
 
         def __getitem__(self, idx):
-            # 使用打乱后的索引
             mapped_idx = self.indices[idx]
             return self.data[mapped_idx], self.labels[mapped_idx]
 
